@@ -229,9 +229,9 @@ video{position:fixed;width:2px;height:2px;opacity:.01;pointer-events:none;bottom
 </style>
 </head>
 <body>
-<header class="top" data-v="18">
+<header class="top" data-v="19">
   <div class="wake" id="wake"><span class="dot"></span><span id="wakeTxt">Toque na tela para manter ligada</span></div>
-  <span class="ver">v18</span>
+  <span class="ver">v19</span>
   <button class="tbtn" id="histBtn" aria-label="Histórico">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>
     <span class="badge" id="histCount">0</span>
@@ -742,7 +742,9 @@ const ALLEX=[...POOL,...Object.values(EQ).flatMap(v=>v.ex)];
 $('exNames').innerHTML=ALLEX.map(x=>`<option value="${esc(x[0])}">`).join('');
 $('exName').addEventListener('change',()=>{const f=ALLEX.find(x=>x[0]===$('exName').value);if(f)$('exUnit').value=f[4]||''});
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
-const rr=x=>x>20?Math.round(x/5)*5:Math.max(2,Math.round(x));
+/* sempre par (no cross trabalha-se os dois lados); de 30 pra cima arredonda de 10 em 10 */
+const ev=x=>Math.max(2,Math.round(x/2)*2);
+const rr=x=>x>=30?Math.round(x/10)*10:ev(x);
 const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const okLvl=x=>(x[3]||0)<=genL;
 function eqCount(noUnit){const ok=x=>okLvl(x)&&!(noUnit&&x[4]);return st.equip.filter(q=>EQ[q]&&EQ[q].ex.some(ok)).length}
@@ -755,13 +757,13 @@ function pick(k,noUnit){const ok=x=>okLvl(x)&&!(noUnit&&x[4]);const eqs=shuf(st.
   return shuf(o)}
 function mk(list,mult){return list.map(({x:[n,a,b,,u],eq})=>{const base=rnd(a,b)*LVL[genL];
   if(u==='m'){const v=base*(mult>1?3:mult<1?.8:1.5),st=v<=300?50:100;return{name:n,u,target:Math.max(50,Math.round(v/st)*st)}}
-  if(u==='cal')return{name:n,u,target:Math.max(5,Math.round(base*(mult>1?2.5:mult<1?.55:1)))};
-  if(u==='s')return{name:n,u,target:Math.max(10,Math.round(base*(mult>1?1.5:mult<1?.7:1)/5)*5)};
+  if(u==='cal')return{name:n,u,target:Math.max(6,ev(base*(mult>1?2.5:mult<1?.55:1)))};
+  if(u==='s')return{name:n,u,target:Math.max(10,Math.round(base*(mult>1?1.5:mult<1?.7:1)/10)*10)};
   return{name:n,target:rr(base*(mult>1&&eq?mult*.8:mult))}})}
 function generate(){const hasEq=st.equip.length>0;
-  if(genT==='amrap'){const min=[10,14,18][genL]+rnd(-2,2);gen={title:`AMRAP ${min} min`,mode:'amrap',cfg:{amrap:min},exMode:'rounds',ex:mk(pick(kFor(rnd(3,4),6)),1),desc:'Faça a lista em ordem e repita. Máximo de rounds no tempo.'}}
-  else if(genT==='fortime'){const cap=[15,20,25][genL];gen={title:`For Time · limite ${cap} min`,mode:'fortime',cfg:{cap},exMode:'chipper',ex:mk(pick(kFor(rnd(4,5),6)),2.5),desc:'Complete a lista inteira uma vez, o mais rápido possível.'}}
-  else if(genT==='emom'){const k=kFor(rnd(2,3),5),per=[3,4,5][genL];gen={title:`EMOM ${k*per} min`,mode:'emom',cfg:{emomInt:60,emomN:k*per},exMode:'rounds',ex:mk(pick(k),.7),desc:'A cada minuto, um exercício da lista, em sequência. Descanse o que sobrar do minuto.'}}
+  if(genT==='amrap'){const min=[10,14,18][genL]+2*rnd(-1,1);gen={title:`AMRAP ${min} min`,mode:'amrap',cfg:{amrap:min},exMode:'rounds',ex:mk(pick(kFor(rnd(3,4),6)),1),desc:'Faça a lista em ordem e repita. Máximo de rounds no tempo.'}}
+  else if(genT==='fortime'){const cap=[16,20,24][genL];gen={title:`For Time · limite ${cap} min`,mode:'fortime',cfg:{cap},exMode:'chipper',ex:mk(pick(kFor(rnd(4,5),6)),2.5),desc:'Complete a lista inteira uma vez, o mais rápido possível.'}}
+  else if(genT==='emom'){const k=kFor(rnd(2,3),5),per=[4,4,6][genL];gen={title:`EMOM ${k*per} min`,mode:'emom',cfg:{emomInt:60,emomN:k*per},exMode:'rounds',ex:mk(pick(k),.7),desc:'A cada minuto, um exercício da lista, em sequência. Descanse o que sobrar do minuto.'}}
   if(genT==='tabata'){const k=kFor([2,3,4][genL],5,true),l=pick(k,true);gen={title:`Tabata · ${k} exercícios · ${k*4} min`,mode:'int',cfg:{work:20,rest:10,rounds:8*k},tabPer:8,exMode:'rounds',ex:l.map(({x})=>({name:x[0],target:0})),desc:'20s de esforço e 10s de descanso. São 8 rounds de cada exercício, em sequência. Faça o máximo de reps em cada intervalo; o placar é o total de reps.'}}
   gen.carga=hasEq?CARGA[genL]:'';renderGen()}
 function eqOf(n){if(POOL.some(x=>x[0]===n))return'Peso do corpo';for(const v of Object.values(EQ))if(v.ex.some(x=>x[0]===n))return v.n;return''}
