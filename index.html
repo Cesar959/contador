@@ -8,7 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Contador de Reps</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@500;600;700&display=swap"></noscript>
 <style>
 /* VOICE: box de cross training, direto, legível de longe com a mão suada e música alta
    IDEA: placar do box: timer e número gigantes, botões grandes como anilhas
@@ -226,9 +227,9 @@ video{position:fixed;width:2px;height:2px;opacity:.01;pointer-events:none;bottom
 </style>
 </head>
 <body>
-<header class="top" data-v="15">
+<header class="top" data-v="16">
   <div class="wake" id="wake"><span class="dot"></span><span id="wakeTxt">Toque na tela para manter ligada</span></div>
-  <span class="ver">v15</span>
+  <span class="ver">v16</span>
   <button class="tbtn" id="histBtn" aria-label="Histórico">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>
     <span class="badge" id="histCount">0</span>
