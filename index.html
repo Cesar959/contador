@@ -229,9 +229,9 @@ video{position:fixed;width:2px;height:2px;opacity:.01;pointer-events:none;bottom
 </style>
 </head>
 <body>
-<header class="top" data-v="17">
+<header class="top" data-v="18">
   <div class="wake" id="wake"><span class="dot"></span><span id="wakeTxt">Toque na tela para manter ligada</span></div>
-  <span class="ver">v17</span>
+  <span class="ver">v18</span>
   <button class="tbtn" id="histBtn" aria-label="Histórico">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>
     <span class="badge" id="histCount">0</span>
@@ -520,7 +520,8 @@ function phase(e){const t=st.tm,c=t.cfg,T=total();
     case'int':{const W=c.work*1000,C=(c.work+c.rest)*1000,i=Math.min(Math.floor(e/C),c.rounds-1),w=e-i*C,wk=w<W||!c.rest,left=wk?W-w:C-w,tx=tabEx(i);return{big:left,down:1,sub:`Round ${i+1} de ${c.rounds}`+(tx?' · '+tx.name:''),idx:i,tag:wk?'TRABALHO':'DESCANSO',key:i+(wk?'w':'r'),left,cls:wk?'work':'rest'}}
     default:return{big:e,sub:'',key:'0',left:null,cls:''}}}
 let lastKey=null,lastBeep=null,lastCount=null,restBeep=null,chipperDone=false;
-function goBeep(){beep(1046,.45);vib(400);flash('work');const t=st.tm,tx=tabEx(0);if(tx){st.act=tabIdx(0)}say(t.mode==='emom'?`Vai! ${emomTxt(0)}`:t.mode==='int'?'Vai! '+(tx?tx.name:'Trabalho'):'Vai!',true)}
+function goBeep(){beep(1046,.45);vib(400);flash('work');const t=st.tm,tx=tabEx(0);if(tx){st.act=tabIdx(0)}const x=st.ex[st.act];say(t.mode==='emom'?`Vai! ${emomTxt(0)}`:t.mode==='int'?'Vai! '+(tx?tx.name:'Trabalho'):'Vai!'+(x?` ${exTxt(x)}`:''),true)}
+const exTxt=x=>x.name+(x.target?`, ${x.target}${UW(x)}`:'');
 function emomTxt(i){const lst=st.ex.length&&st.exMode==='rounds'?st.ex:null,x=lst?lst[i%lst.length]:null;return `${st.tm.cfg.emomInt===60?'Minuto':'Intervalo'} ${i+1}`+(x?`: ${x.name}, ${x.target}${UW(x)}`:'')}
 function begin(zero){audio();const t=st.tm;if(zero)resetCounts();t.n0=st.n;t.r0=st.r;st.splits=[];st.ev=[];t.pacc=0;t.end=0;lastKey=null;lastBeep=null;spoken=new Set();
   if(st.cd){t.status='count';t.cAt=now();lastCount=null}else{t.status='run';t.t0=now();goBeep()}
@@ -543,7 +544,7 @@ function resetCounts(){st.n=0;st.h=[];st.r=0;st.splits=[];st.ev=[];st.metaHit=fa
 function splitTimes(){const a=[];let p=0;for(const s of st.splits){if(s==null)continue;a.push(s-p);p=s}return a}
 function addRound(){st.r++;st.splits.push(active()?el():null);
   if(st.ex.length&&st.exMode==='rounds'){st.ex.forEach(e=>e.c=0);st.act=0}
-  vib([80,60,80]);beep(880,.15);flash('round');const sp=splitTimes();if(active())say(`Round ${st.r}`+(sp.length&&st.splits[st.splits.length-1]!=null?`, ${spk(sp[sp.length-1])}`:''),true);toast(`Round ${st.r} completo`+(active()&&sp.length?` · ${fmt(sp[sp.length-1])}`:''))}
+  vib([80,60,80]);beep(880,.15);flash('round');const sp=splitTimes();if(active()){const nx=st.ex.length&&st.exMode==='rounds'&&st.tm.mode!=='emom'&&st.tm.mode!=='int'?st.ex[0]:null;say(`Round ${st.r}`+(sp.length&&st.splits[st.splits.length-1]!=null?`, ${spk(sp[sp.length-1])}`:'')+(nx?`. Próximo: ${exTxt(nx)}`:''),true)}toast(`Round ${st.r} completo`+(active()&&sp.length?` · ${fmt(sp[sp.length-1])}`:''))}
 function advance(){if(st.act<st.ex.length-1){st.act++;const x=st.ex[st.act];if(active())say(`Próximo: ${x.name}`+(x.target?`, ${x.target}${UW(x)}`:''));return true}if(st.exMode==='rounds'){addRound();return true}chipperDone=true;return false}
 const repSum=l=>l.reduce((a,e)=>a+(e.u?0:e.target),0);
 function checkChipper(){if(chipperDone&&st.exMode==='chipper'&&st.tm.status==='run'&&st.ex.every(e=>e.target>0&&e.c>=e.target)){toast('WOD completo!');finish(false)}}
