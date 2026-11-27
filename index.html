@@ -151,6 +151,7 @@ h3{margin:0;font-size:18px}
 .cat button{padding:8px 12px}
 .vbox{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
 .vbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.gbtns{display:flex;flex-direction:column;gap:6px;flex:none}
 .howto{flex:none;min-height:36px;padding:0 10px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:700;white-space:nowrap}
 .genc li{display:flex;align-items:center;gap:8px;justify-content:space-between}
 .wide{min-height:50px;border-radius:14px;font-weight:700}
@@ -229,9 +230,9 @@ video{position:fixed;width:2px;height:2px;opacity:.01;pointer-events:none;bottom
 </style>
 </head>
 <body>
-<header class="top" data-v="20">
+<header class="top" data-v="21">
   <div class="wake" id="wake"><span class="dot"></span><span id="wakeTxt">Toque na tela para manter ligada</span></div>
-  <span class="ver">v20</span>
+  <span class="ver">v21</span>
   <button class="tbtn" id="histBtn" aria-label="Histórico">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>
     <span class="badge" id="histCount">0</span>
@@ -668,7 +669,7 @@ const EQ={
   trx:{n:'TRX',ex:[['Remada no TRX',10,20],['Agachamento com TRX',15,25],['Flexão no TRX',8,15,1],['Afundo no TRX',10,16],['Rosca bíceps no TRX',10,16],['Joelho no peito no TRX',10,16],['Pike no TRX',6,12,2]]},
   caixa:{n:'Caixa',ex:[['Subida na caixa',12,24],['Passagem pela caixa (subindo)',10,20],['Burpee com subida na caixa',6,12],['Salto na caixa',8,15,2],['Box jump over',8,15,2],['Burpee com salto na caixa',6,12,2],['Flexão com pés na caixa',8,14,1],['Tríceps na caixa',10,20]]},
   corrida:{n:'Corrida',ex:[['Corrida',100,200,0,'m']]},
-  sandbag:{n:'Bag com peso',ex:[['Clean com sandbag',8,15],['Agachamento com sandbag',10,20],['Sandbag ao ombro',6,12],['Afundo com sandbag',10,16],['Caminhada com sandbag',50,100,0,'m']]},
+  sandbag:{n:'Bag com peso',ex:[['Clean com sandbag',8,15],['Agachamento com sandbag',10,20],['Sandbag ao ombro',6,12],['Passada com sandbag',10,20]]},
   bike:{n:'Bike',ex:[['Bike sprint',8,15,0,'cal']]},
   remo:{n:'Remador',ex:[['Remo',10,18,0,'cal']]}};
 /* guia: nome → [passos separados por |, dica] */
@@ -724,8 +725,7 @@ const GUIDE={
 'Clean com sandbag':['Bag no chão entre os pés.|Agache com as costas retas e segure a bag por baixo.|Estenda o quadril com força e traga a bag até o peito, abraçada.|Solte no chão e repita.','A força vem das pernas e do quadril, não das costas.'],
 'Agachamento com sandbag':['Segure a bag abraçada junto ao peito.|Agache como no agachamento livre.|Suba estendendo o quadril.','Tronco erguido e cotovelos firmes segurando a bag.'],
 'Sandbag ao ombro':['Bag no chão. Agache e abrace a bag.|Levante e, estendendo o quadril, jogue a bag por cima de um ombro.|Solte a bag para trás (ou desça até o chão) e repita no outro ombro.','Cada levantada conta 1 rep. Costas retas na hora de pegar no chão.'],
-'Afundo com sandbag':['Bag sobre os ombros ou abraçada no peito.|Dê um passo à frente e desça até o joelho de trás quase tocar o chão.|Volte e troque de perna.','Cada perna conta 1 rep.'],
-'Caminhada com sandbag':['Levante a bag e segure abraçada no peito ou apoiada no ombro.|Caminhe a distância indicada.','Abdômen firme e passos curtos. Pode colocar no chão para descansar e seguir.'],
+'Passada com sandbag':['Coloque a bag nas costas (sobre os ombros), segurando firme.|Dê um passo à frente e desça até o joelho de trás quase tocar o chão.|Suba e dê o próximo passo com a outra perna.|Se o espaço for pequeno, faça no lugar: volte a perna e alterne.','Cada perna conta 1 rep. Tronco ereto e abdômen firme.'],
 'Bike sprint':['Zere o visor da bike antes de começar.|Pedale forte até o visor marcar as calorias indicadas. Na air bike, empurre e puxe os braços junto.','Comece forte, mas num ritmo que você consiga segurar até o fim.'],
 'Remo':['Zere o monitor e prenda os pés.|Na puxada: empurre primeiro com as pernas, depois incline um pouco o tronco para trás e puxe a manopla até o peito.|Na volta, faça na ordem inversa: braços, tronco e por último dobre as pernas.|Reme até o monitor marcar as calorias indicadas.','A maior parte da força vem das pernas, não dos braços.'],
 'Burpee com agachamento':['Faça um burpee completo (peito no chão e volta).|Ao levantar, em vez do salto, faça um agachamento completo.|Isso tudo conta 1 rep.','Mantenha o calcanhar no chão no agachamento. Para facilitar, desça e volte um pé de cada vez no burpee.'],
@@ -736,7 +736,7 @@ const GUIDE={
 'Burpee com subida na caixa':['Faça um burpee de frente para a caixa.|Ao levantar, suba na caixa pisando, um pé de cada vez.|Desça pisando e repita.','Versão sem salto do burpee box jump.'],
 'Corrida':['Corra a distância indicada no ritmo do treino.','Se souber o tamanho da volta do box, conte as voltas. Ex.: volta de 50 m, 200 m são 4 voltas.']};
 /* foco principal de cada exercício */
-const FOCO={"Burpee com agachamento":"Corpo todo, pernas e condicionamento","Burpee lateral sobre a linha":"Corpo todo, condicionamento e explosão","Burpee sobre a linha (virando)":"Corpo todo, condicionamento e explosão","Supino no chão com halteres":"Peito, ombros e tríceps","Passagem pela caixa (subindo)":"Pernas, glúteos e condicionamento","Burpee com subida na caixa":"Corpo todo e condicionamento","Agachamento livre": "Pernas e glúteos", "Flexão": "Peito, ombros e tríceps", "Burpee": "Corpo todo e condicionamento", "Abdominal remador": "Abdômen", "Afundo alternado": "Pernas e glúteos", "Polichinelo": "Condicionamento (cardio)", "Escalador": "Abdômen, ombros e cardio", "Agachamento com salto": "Pernas, glúteos e explosão", "Hollow rock": "Abdômen (core)", "Superman": "Lombar e costas", "Abdominal canivete": "Abdômen", "Flexão com toque no ombro": "Peito, ombros e core", "Thruster com halteres": "Pernas, glúteos e ombros", "Snatch alternado com halter": "Corpo todo: quadril, costas e ombros", "Agachamento com halteres": "Pernas e glúteos", "Desenvolvimento com halteres": "Ombros e tríceps", "Remada com halter": "Costas e bíceps", "Afundo com halteres": "Pernas e glúteos", "Devil press": "Corpo todo e condicionamento", "Wall ball (arremesso na parede)": "Pernas, glúteos e ombros", "Agachamento com bola": "Pernas e glúteos", "Abdominal com bola": "Abdômen", "Arremesso de bola no chão": "Corpo todo: core, ombros e costas", "Swing com kettlebell": "Glúteos, posterior da coxa e lombar", "Agachamento goblet com kettlebell": "Pernas e glúteos", "Levantamento terra com kettlebell": "Posterior da coxa, glúteos e lombar", "Clean alternado com kettlebell": "Quadril, costas e ombros", "Snatch alternado com kettlebell": "Corpo todo: quadril, costas e ombros", "Pular corda": "Condicionamento e panturrilha", "Double under": "Condicionamento, panturrilha e coordenação", "Barra fixa": "Costas e bíceps", "Joelho no cotovelo": "Abdômen e pegada", "Toes to bar": "Abdômen, pegada e costas", "Remada australiana": "Costas e bíceps", "Pendurar na barra": "Pegada (antebraço) e ombros", "Remada no TRX": "Costas e bíceps", "Agachamento com TRX": "Pernas e glúteos", "Flexão no TRX": "Peito, ombros e core", "Afundo no TRX": "Pernas e glúteos", "Rosca bíceps no TRX": "Bíceps", "Joelho no peito no TRX": "Abdômen", "Pike no TRX": "Abdômen e ombros", "Subida na caixa": "Pernas e glúteos", "Salto na caixa": "Pernas e explosão", "Box jump over": "Pernas, explosão e condicionamento", "Burpee com salto na caixa": "Corpo todo e condicionamento", "Flexão com pés na caixa": "Peito (parte de cima) e ombros", "Tríceps na caixa": "Tríceps", "Corrida": "Condicionamento (cardio) e pernas", "Clean com sandbag": "Corpo todo: pernas, quadril e costas", "Agachamento com sandbag": "Pernas, glúteos e core", "Sandbag ao ombro": "Corpo todo: quadril, costas e pegada", "Afundo com sandbag": "Pernas e glúteos", "Caminhada com sandbag": "Core, costas e pegada", "Bike sprint": "Condicionamento (cardio) e pernas", "Remo": "Condicionamento, costas e pernas"};
+const FOCO={"Burpee com agachamento":"Corpo todo, pernas e condicionamento","Burpee lateral sobre a linha":"Corpo todo, condicionamento e explosão","Burpee sobre a linha (virando)":"Corpo todo, condicionamento e explosão","Supino no chão com halteres":"Peito, ombros e tríceps","Passagem pela caixa (subindo)":"Pernas, glúteos e condicionamento","Burpee com subida na caixa":"Corpo todo e condicionamento","Agachamento livre": "Pernas e glúteos", "Flexão": "Peito, ombros e tríceps", "Burpee": "Corpo todo e condicionamento", "Abdominal remador": "Abdômen", "Afundo alternado": "Pernas e glúteos", "Polichinelo": "Condicionamento (cardio)", "Escalador": "Abdômen, ombros e cardio", "Agachamento com salto": "Pernas, glúteos e explosão", "Hollow rock": "Abdômen (core)", "Superman": "Lombar e costas", "Abdominal canivete": "Abdômen", "Flexão com toque no ombro": "Peito, ombros e core", "Thruster com halteres": "Pernas, glúteos e ombros", "Snatch alternado com halter": "Corpo todo: quadril, costas e ombros", "Agachamento com halteres": "Pernas e glúteos", "Desenvolvimento com halteres": "Ombros e tríceps", "Remada com halter": "Costas e bíceps", "Afundo com halteres": "Pernas e glúteos", "Devil press": "Corpo todo e condicionamento", "Wall ball (arremesso na parede)": "Pernas, glúteos e ombros", "Agachamento com bola": "Pernas e glúteos", "Abdominal com bola": "Abdômen", "Arremesso de bola no chão": "Corpo todo: core, ombros e costas", "Swing com kettlebell": "Glúteos, posterior da coxa e lombar", "Agachamento goblet com kettlebell": "Pernas e glúteos", "Levantamento terra com kettlebell": "Posterior da coxa, glúteos e lombar", "Clean alternado com kettlebell": "Quadril, costas e ombros", "Snatch alternado com kettlebell": "Corpo todo: quadril, costas e ombros", "Pular corda": "Condicionamento e panturrilha", "Double under": "Condicionamento, panturrilha e coordenação", "Barra fixa": "Costas e bíceps", "Joelho no cotovelo": "Abdômen e pegada", "Toes to bar": "Abdômen, pegada e costas", "Remada australiana": "Costas e bíceps", "Pendurar na barra": "Pegada (antebraço) e ombros", "Remada no TRX": "Costas e bíceps", "Agachamento com TRX": "Pernas e glúteos", "Flexão no TRX": "Peito, ombros e core", "Afundo no TRX": "Pernas e glúteos", "Rosca bíceps no TRX": "Bíceps", "Joelho no peito no TRX": "Abdômen", "Pike no TRX": "Abdômen e ombros", "Subida na caixa": "Pernas e glúteos", "Salto na caixa": "Pernas e explosão", "Box jump over": "Pernas, explosão e condicionamento", "Burpee com salto na caixa": "Corpo todo e condicionamento", "Flexão com pés na caixa": "Peito (parte de cima) e ombros", "Tríceps na caixa": "Tríceps", "Corrida": "Condicionamento (cardio) e pernas", "Clean com sandbag": "Corpo todo: pernas, quadril e costas", "Agachamento com sandbag": "Pernas, glúteos e core", "Sandbag ao ombro": "Corpo todo: quadril, costas e pegada", "Passada com sandbag": "Pernas, glúteos e core", "Bike sprint": "Condicionamento (cardio) e pernas", "Remo": "Condicionamento, costas e pernas"};
 /* vídeo curto de cada exercício (YouTube) */
 const VID={"Agachamento livre": "bxq2eVZl9nY", "Flexão": "9ozLIq3Nmkw", "Burpee": "CrGAnJEfcmY", "Abdominal remador": "pNRpcChQmq0", "Escalador": "Gi5QxKITke4", "Hollow rock": "X9TsC4KcT5M", "Superman": "_kY519rZBR4", "Abdominal canivete": "O6jmoSuGGAc", "Thruster com halteres": "c9VIcqj_zSQ", "Snatch alternado com halter": "zVptpUTqUUg", "Devil press": "-C1iixGN9M8", "Wall ball (arremesso na parede)": "PuWt9mmf3NQ", "Agachamento com bola": "ittw63YCpVk", "Arremesso de bola no chão": "WOmQo94_45w", "Swing com kettlebell": "MB87gQFA_y0", "Agachamento goblet com kettlebell": "ittw63YCpVk", "Levantamento terra com kettlebell": "9uJwK966XLA", "Clean alternado com kettlebell": "1vwTrTKTN08", "Snatch alternado com kettlebell": "OVbAImyB1eY", "Double under": "6ackfoHYHeo", "Barra fixa": "bypH_WAa5hM", "Joelho no cotovelo": "MDCvXoujTCg", "Toes to bar": "6V69wk46-io", "Remada australiana": "cWsfmuBjHIY", "Remada no TRX": "_e7Jg9S_15Q", "Joelho no peito no TRX": "Di4iO3Tvmek", "Pike no TRX": "eCkgdkJJhjM", "Salto na caixa": "S0KIoAmGKFY", "Box jump over": "O3c3nXuobm4", "Burpee com salto na caixa": "HWkusQYVQAo", "Tríceps na caixa": "beP6Rzo2Gw0", "Clean com sandbag": "BR8QHdofycg", "Sandbag ao ombro": "QdZ2sXyKPeA", "Remo": "mY-Ll41jcBs"};
 const inFrame=(()=>{try{return window.self!==window.top}catch(e){return true}})();
@@ -755,11 +755,14 @@ const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i
 const okLvl=x=>(x[3]||0)<=genL;
 function eqCount(noUnit){const ok=x=>okLvl(x)&&!(noUnit&&x[4]);return st.equip.filter(q=>EQ[q]&&EQ[q].ex.some(ok)).length}
 /* garante espaço pra todos os equipamentos marcados (até o limite do tipo de treino) */
-const kFor=(base,max,noUnit)=>Math.min(Math.max(base,eqCount(noUnit)),max);
+const kFor=(base,max,noUnit)=>{const n=eqCount(noUnit);return Math.min(Math.max(base,n?n+1:0),max)};/* sobra 1 vaga pra peso do corpo */
 function pick(k,noUnit){const ok=x=>okLvl(x)&&!(noUnit&&x[4]);const eqs=shuf(st.equip.filter(q=>EQ[q]&&EQ[q].ex.some(ok)));const o=[];
   const need=Math.min(eqs.length,k);
   for(const q of eqs.slice(0,need)){const c=EQ[q].ex.filter(ok);o.push({x:c[Math.floor(Math.random()*c.length)],eq:1})}
-  const bw=shuf(POOL.filter(okLvl));while(o.length<k&&bw.length)o.push({x:bw.pop(),eq:0});
+  const isB=x=>/^Burpee/.test(x[0]);let bw=shuf(POOL.filter(okLvl));
+  if(o.some(e=>isB(e.x)))bw=bw.filter(x=>!isB(x));
+  else if(o.length<k&&Math.random()<.6){const bv=bw.filter(isB);o.push({x:bv[Math.floor(Math.random()*bv.length)],eq:0});bw=bw.filter(x=>!isB(x))}
+  while(o.length<k&&bw.length){const x=bw.pop();o.push({x,eq:0});if(isB(x))bw=bw.filter(y=>!isB(y))}
   return shuf(o)}
 function mk(list,mult){return list.map(({x:[n,a,b,,u],eq})=>{const base=rnd(a,b)*LVL[genL];
   if(u==='m'){const v=base*(mult>1?3:mult<1?.8:1.5),st=v<=300?50:100;return{name:n,u,target:Math.max(50,Math.round(v/st)*st)}}
@@ -767,10 +770,10 @@ function mk(list,mult){return list.map(({x:[n,a,b,,u],eq})=>{const base=rnd(a,b)
   if(u==='s')return{name:n,u,target:Math.max(10,Math.round(base*(mult>1?1.5:mult<1?.7:1)/10)*10)};
   return{name:n,target:rr(base*(mult>1&&eq?mult*.8:mult))}})}
 function generate(){const hasEq=st.equip.length>0;
-  if(genT==='amrap'){const min=[10,14,18][genL]+2*rnd(-1,1);gen={title:`AMRAP ${min} min`,mode:'amrap',cfg:{amrap:min},exMode:'rounds',ex:mk(pick(kFor(rnd(3,4),6)),1),desc:'Faça a lista em ordem e repita. Máximo de rounds no tempo.'}}
-  else if(genT==='fortime'){const cap=[16,20,24][genL];gen={title:`For Time · limite ${cap} min`,mode:'fortime',cfg:{cap},exMode:'chipper',ex:mk(pick(kFor(rnd(4,5),6)),2.5),desc:'Complete a lista inteira uma vez, o mais rápido possível.'}}
-  else if(genT==='emom'){const k=kFor(rnd(2,3),5),per=[4,4,6][genL];gen={title:`EMOM ${k*per} min`,mode:'emom',cfg:{emomInt:60,emomN:k*per},exMode:'rounds',ex:mk(pick(k),.7),desc:'A cada minuto, um exercício da lista, em sequência. Descanse o que sobrar do minuto.'}}
-  if(genT==='tabata'){const k=kFor([2,3,4][genL],5,true),l=pick(k,true);gen={title:`Tabata · ${k} exercícios · ${k*4} min`,mode:'int',cfg:{work:20,rest:10,rounds:8*k},tabPer:8,exMode:'rounds',ex:l.map(({x})=>({name:x[0],target:0})),desc:'20s de esforço e 10s de descanso. São 8 rounds de cada exercício, em sequência. Faça o máximo de reps em cada intervalo; o placar é o total de reps.'}}
+  if(genT==='amrap'){const min=[10,14,18][genL]+2*rnd(-1,1);gen={title:`AMRAP ${min} min`,mode:'amrap',cfg:{amrap:min},exMode:'rounds',mult:1,ex:mk(pick(kFor(rnd(3,4),6)),1),desc:'Faça a lista em ordem e repita. Máximo de rounds no tempo.'}}
+  else if(genT==='fortime'){const cap=[16,20,24][genL];gen={title:`For Time · limite ${cap} min`,mode:'fortime',cfg:{cap},exMode:'chipper',mult:2.5,ex:mk(pick(kFor(rnd(4,5),6)),2.5),desc:'Complete a lista inteira uma vez, o mais rápido possível.'}}
+  else if(genT==='emom'){const k=kFor(rnd(2,3),5),per=[4,4,6][genL];gen={title:`EMOM ${k*per} min`,mode:'emom',cfg:{emomInt:60,emomN:k*per},exMode:'rounds',mult:.7,ex:mk(pick(k),.7),desc:'A cada minuto, um exercício da lista, em sequência. Descanse o que sobrar do minuto.'}}
+  if(genT==='tabata'){const k=kFor([2,3,4][genL],5,true),l=pick(k,true);gen={title:`Tabata · ${k} exercícios · ${k*4} min`,mode:'int',cfg:{work:20,rest:10,rounds:8*k},tabPer:8,noUnit:true,exMode:'rounds',ex:l.map(({x})=>({name:x[0],target:0})),desc:'20s de esforço e 10s de descanso. São 8 rounds de cada exercício, em sequência. Faça o máximo de reps em cada intervalo; o placar é o total de reps.'}}
   gen.carga=hasEq?CARGA[genL]:'';renderGen()}
 function eqOf(n){if(POOL.some(x=>x[0]===n))return'Peso do corpo';for(const v of Object.values(EQ))if(v.ex.some(x=>x[0]===n))return v.n;return''}
 function showGuide(n){const g=GUIDE[n];$('gT').textContent=n;const eq=eqOf(n);$('gEq').innerHTML=(FOCO[n]?`<b>Foco:</b> ${esc(FOCO[n])}<br>`:'')+(eq?'Equipamento: '+esc(eq):'');
@@ -781,13 +784,24 @@ function showGuide(n){const g=GUIDE[n];$('gT').textContent=n;const eq=eqOf(n);$(
   openOv('guideOv')}
 function showCat(){const groups=[['Peso do corpo',POOL],...Object.values(EQ).map(v=>[v.n,v.ex])];
   $('catBody').innerHTML=`<div class="cat">${groups.map(([t,l])=>`<h4>${t}</h4>${l.map(x=>`<button data-guide="${esc(x[0])}">${esc(x[0])}<small class="foco">${FOCO[x[0]]||''}</small></button>`).join('')}`).join('')}</div>`;openOv('catOv')}
-function focoGeral(l){const G=[['Pernas',/pernas|posterior|panturrilha/i],['Glúteos',/Glúteos|quadril/i],['Costas',/costas|lombar/i],['Peito',/peito/i],['Ombros',/Ombros|ombros/],['Braços',/Bíceps|Tríceps|bíceps|tríceps|Pegada|pegada/],['Abdômen',/Abdômen|core/i],['Cardio',/Condicionamento|cardio/i]];
+const FG=[['Pernas',/pernas|posterior|panturrilha/i],['Glúteos',/Glúteos|quadril/i],['Costas',/costas|lombar/i],['Peito',/peito/i],['Ombros',/Ombros|ombros/],['Braços',/Bíceps|Tríceps|bíceps|tríceps|Pegada|pegada/],['Abdômen',/Abdômen|core/i],['Cardio',/Condicionamento|cardio/i]];
+function primaryOf(n){const f=FOCO[n]||'';let best=null,bi=1e9;for(const[g,r]of FG){const m=f.search(r);if(m>=0&&m<bi){bi=m;best=g}}return best}
+function groupsOf(n){const f=FOCO[n]||'';return FG.filter(([,r])=>r.test(f)).map(x=>x[0])}
+function eqKeyOf(n){for(const[k,v]of Object.entries(EQ))if(v.ex.some(x=>x[0]===n))return k;return'bw'}
+function swapGen(i){if(!gen)return;const cur=gen.ex[i],P=primaryOf(cur.name),K=eqKeyOf(cur.name),Gs=groupsOf(cur.name);
+  const ok=x=>okLvl(x)&&!(gen.noUnit&&x[4]),used=new Set(gen.ex.map(e=>e.name));
+  const all=[...POOL.filter(ok).map(x=>({x,eq:0,k:'bw'})),...st.equip.filter(q=>EQ[q]).flatMap(q=>EQ[q].ex.filter(ok).map(x=>({x,eq:1,k:q})))].filter(c=>!used.has(c.x[0]));
+  const tiers=[all.filter(c=>c.k===K&&primaryOf(c.x[0])===P),all.filter(c=>primaryOf(c.x[0])===P),all.filter(c=>groupsOf(c.x[0]).some(g=>Gs.includes(g))),all.filter(c=>c.k===K),all];
+  const t=tiers.find(a=>a.length);if(!t){toast('Não há outro exercício parecido com esses equipamentos');return}
+  const c=t[Math.floor(Math.random()*t.length)];const nx=gen.tabPer?{name:c.x[0],target:0}:mk([c],gen.mult||1)[0];
+  gen.ex[i]=nx;renderGen();toast(`${cur.name} → ${nx.name}`)}
+function focoGeral(l){const G=FG;
   const c=G.filter(([,r])=>l.some(e=>r.test(FOCO[e.name]||''))).map(x=>x[0]);return c.length?`<p class="note"><b>Este treino trabalha:</b> ${c.join(', ')}</p>`:''}
 function renderGen(){
   $('genEq').innerHTML=Object.entries(EQ).map(([k,v])=>`<button data-eq="${k}" class="${st.equip.includes(k)?'on':''}" aria-pressed="${st.equip.includes(k)}">${v.n}</button>`).join('');
   document.querySelectorAll('[data-gt]').forEach(b=>b.classList.toggle('on',b.dataset.gt===genT));
   document.querySelectorAll('[data-gl]').forEach(b=>b.classList.toggle('on',+b.dataset.gl===genL));
-  $('genOut').innerHTML=gen?`<div class="genc"><h4>${gen.title}</h4><p class="note">${LVLN[genL]}${gen.carga?' · '+gen.carga:''} · ${gen.desc}</p><ol>${gen.ex.map(e=>`<li><span><b>${gen.tabPer?gen.tabPer+' rounds':e.target+UN(e)}</b> ${esc(e.name)}${FOCO[e.name]?`<small class="foco">Foco: ${FOCO[e.name]}</small>`:''}</span><button class="howto" data-guide="${esc(e.name)}">Como fazer</button></li>`).join('')}</ol>${gen.exMode==='chipper'?`<p class="note">Total: ${repSum(gen.ex)} reps</p>`:''}${focoGeral(gen.ex)}${gen.ex.some(e=>e.u)?'<p class="note">Corrida, bike, remo, caminhada e "pendurar" não contam reps: no treino você toca em "Concluí" quando terminar, ou só começa a contar o próximo exercício.</p>':''}<div class="acts"><button class="ghost" id="genAgain">Gerar outro</button><button class="ok" id="genUse">Usar este WOD</button></div></div>`:''}
+  $('genOut').innerHTML=gen?`<div class="genc"><h4>${gen.title}</h4><p class="note">${LVLN[genL]}${gen.carga?' · '+gen.carga:''} · ${gen.desc}</p><ol>${gen.ex.map((e,i)=>`<li><span><b>${gen.tabPer?gen.tabPer+' rounds':e.target+UN(e)}</b> ${esc(e.name)}${FOCO[e.name]?`<small class="foco">Foco: ${FOCO[e.name]}</small>`:''}</span><span class="gbtns"><button class="howto" data-swap="${i}" aria-label="Trocar ${esc(e.name)}">↻ Trocar</button><button class="howto" data-guide="${esc(e.name)}">Como fazer</button></span></li>`).join('')}</ol>${gen.exMode==='chipper'?`<p class="note">Total: ${repSum(gen.ex)} reps</p>`:''}${focoGeral(gen.ex)}${gen.ex.some(e=>e.u)?'<p class="note">Corrida, bike, remo, caminhada e "pendurar" não contam reps: no treino você toca em "Concluí" quando terminar, ou só começa a contar o próximo exercício.</p>':''}<div class="acts"><button class="ghost" id="genAgain">Gerar outro</button><button class="ok" id="genUse">Usar este WOD</button></div></div>`:''}
 function useGen(){if(!gen)return;st.ex=gen.ex.map(e=>({...e,c:0,tot:0}));st.exMode=gen.exMode;st.act=0;st.tabPer=gen.tabPer||0;
   st.block=0;st.meta=gen.exMode==='chipper'?repSum(gen.ex):0;st.metaHit=st.meta&&st.n>=st.meta;
   const free=st.tm.status==='idle'||st.tm.status==='done';
@@ -899,6 +913,7 @@ document.addEventListener('click',e=>{const q=s=>e.target.closest(s);let b;
   if(b=q('[data-d]'))return applyDelta(+b.dataset.d);
   if(b=q('[data-tab]'))return tab(b.dataset.tab);
   if(b=q('[data-ex]')){st.act=+b.dataset.ex;save();return renderAll()}
+  if(b=q('[data-swap]'))return swapGen(+b.dataset.swap);
   if(b=q('[data-guide]'))return showGuide(b.dataset.guide);
   if(b=q('#gPlay')){const id=b.dataset.vid;$('gVid').innerHTML=`<div class="vbox"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&playsinline=1" title="Vídeo do exercício" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;b.remove();return}
   if(q('#catBtn')||q('#gBack'))return showCat();
